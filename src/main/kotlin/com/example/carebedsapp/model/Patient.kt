@@ -12,7 +12,7 @@ data class Patient(
     val name: String,
     val priority: String,
     val address: String,
-    val problem: String,
+
 
     @JsonIgnore
     @ManyToOne
@@ -26,7 +26,14 @@ data class Patient(
     var role: String,
     val email: String,
     val phoneNumber: String,
-    val password: String
+    val password: String,
+    val location:String? = null,
+    val gender:String?= null,
+    val bloodType:String?= null,
+    val medicalCondition:String?= null,
+    val admissionType:String?= null,
+    val medications:String?= null,
+    val testResults:String?= null
 ) {
     // Initialize the derived properties similarly
     val bedNum: Int? get() = registeredBed?.id

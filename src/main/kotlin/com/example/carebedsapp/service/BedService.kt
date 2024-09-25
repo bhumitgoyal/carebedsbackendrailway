@@ -34,16 +34,16 @@ class BedService(
         val patient = patientRepository.findById(patientId).orElseThrow {
             ResourceNotFoundException("Patient not found")
         }
-        val hospital = hospitalRepository.findById(patient.id).orElseThrow {
-            ResourceNotFoundException("Hospital not found")
+        val hospital = patient.registeredHospital?.let {
+            hospitalRepository.findById(it.id).orElseThrow {
+                ResourceNotFoundException("Hospital not found")
+            }
         }
         if(hospital!=null){
             hospitalService.admitPatient(patientId,hospital.id)
         }
-        else{
-            throw ResourceNotFoundException("AAGAYAA")
-        }
 
+        bed.availability="false"
         bed.patient = patient
         patient.registeredBed = bed
 
@@ -52,26 +52,35 @@ class BedService(
     }
 
     @Transactional
-    fun freePatient(patientId: Int) {
-        val patient = patientRepository.findById(patientId).orElseThrow {
-            ResourceNotFoundException("Patient not found")
-        }
+    fun freePatient(bedId: Int) {
+
+        val bed = bedRepository.findById(bedId).orElseThrow{ResourceNotFoundException("Bed not fiund")}
+        val patient = bed.patient
 
 
-        val bed = patient.registeredBed
-        val hospital = patient.registeredHospital
+
+        val hospital = patient?.registeredHospital
         if(hospital!=null){
-            hospitalService.removePatient(hospital.id,patientId)
+            if (patient != null) {
+                hospitalService.removePatient(hospital.id,patient.id)
+            }
         }
 
         if (bed != null) {
             bed.patient = null
+            bed.availability="true"
             bedRepository.save(bed) // Save bed after detaching patient
         }
-        patient.registeredHospital = null
+        if (patient != null) {
+            patient.registeredHospital = null
+        }
 
-        patient.registeredBed = null
-        patientRepository.save(patient)
+        if (patient != null) {
+            patient.registeredBed = null
+        }
+        if (patient != null) {
+            patientRepository.save(patient)
+        }
     }
 
     fun getAllBeds(): List<Bed> {

@@ -103,7 +103,10 @@ class HospitalService(
         if(hospital.admittedPatients.contains(patient)){
             hospital.admittedPatients.remove(patient)
 
+            patient.registeredHospital = null
+
             hospitalRepository.save(hospital)
+            patientRepository.save(patient)
 
         }
     }

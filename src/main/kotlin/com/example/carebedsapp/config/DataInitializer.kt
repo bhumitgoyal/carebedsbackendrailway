@@ -51,7 +51,7 @@ class DataInitializer(
             name = "John Doe",
             priority = "High",
             address = "789 Elm St, Citytown",
-            problem = "Severe headache",
+
             registeredHospital = hospital1,
             registeredBed = bed1,
             role = "ROLE_PATIENT",

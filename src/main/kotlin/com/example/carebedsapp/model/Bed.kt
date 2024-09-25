@@ -2,6 +2,7 @@ package com.example.carebedsapp.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import org.springframework.boot.availability.ApplicationAvailability
 import java.util.*
 @Entity
 data class Bed(
@@ -14,12 +15,14 @@ data class Bed(
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "hospital_id")
-    var hospital: Hospital,
+    var hospital: Hospital? =null,
 
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "patient_id")
     var patient: Patient? = null,
+
+    var availability: String? = "true"
 
 
 

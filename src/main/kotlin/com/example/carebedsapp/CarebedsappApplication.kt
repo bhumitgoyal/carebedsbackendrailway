@@ -8,5 +8,6 @@ class CarebedsappApplication
 
 fun main(args: Array<String>) {
 	runApplication<CarebedsappApplication>(*args)
-	//hey
+
 }
+

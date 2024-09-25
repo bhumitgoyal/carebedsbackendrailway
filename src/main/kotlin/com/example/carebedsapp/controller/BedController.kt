@@ -1,6 +1,7 @@
 package com.example.carebedsapp.controller
 
 import com.example.carebedsapp.model.Bed
+import com.example.carebedsapp.model.BedRequest
 import com.example.carebedsapp.model.Hospital
 import com.example.carebedsapp.model.Patient
 import com.example.carebedsapp.service.BedService
@@ -14,9 +15,15 @@ import org.springframework.web.bind.annotation.*
 class BedController(private val bedService: BedService,private val hospitalService: HospitalService,private val patientService: PatientService) {
 
     @PostMapping("/register")
-    fun registerBed(@RequestBody bed: Bed): ResponseEntity<Bed> {
-        val createdBed = bedService.addBed(bed)
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBed)
+    fun registerBed(@RequestBody bedRequest: BedRequest): ResponseEntity<Bed> {
+        val hospital = hospitalService.getHospitalById(bedRequest.hospitalId) ?: return ResponseEntity.notFound().build()
+        val newBed = Bed(
+            name = bedRequest.name,
+            hospital = hospital,
+            availability = bedRequest.availability
+        )
+        val savedBed = bedService.addBed(newBed)
+        return ResponseEntity.ok(savedBed)
     }
 
     @DeleteMapping("/{id}")
@@ -52,9 +59,9 @@ class BedController(private val bedService: BedService,private val hospitalServi
         return ResponseEntity.ok("Patient admitted successfully")
     }
 
-    @PostMapping("{bedId}/free/{patientId}")
-    fun freePatient(@PathVariable bedId: Int, @PathVariable patientId: Int): ResponseEntity<String> {
-        bedService.freePatient(patientId)
+    @PostMapping("{bedId}/free")
+    fun freePatient(@PathVariable bedId: Int): ResponseEntity<String> {
+        bedService.freePatient(bedId)
 
 
         return ResponseEntity.ok("Patient freed from bed successfully")
