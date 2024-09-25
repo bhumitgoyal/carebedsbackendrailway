@@ -3,7 +3,6 @@ package com.example.carebedsapp.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.util.*
-
 @Entity
 data class Patient(
     @Id
@@ -11,23 +10,28 @@ data class Patient(
     val id: Int = 0,
 
     val name: String,
+    val priority: String,
+    val address: String,
+    val problem: String,
 
-    val email: String,
-
-    val phoneNumber: String,
-    val password: String,
-    val Status:String,
-    val address:String,
-    val problem:String,
-    var registeredHospital:Hospital? = null,
-
-    @ManyToOne(mappedBy = "registeredUsers", fetch = FetchType.LAZY)
     @JsonIgnore
-    var registeredBed:Bed? = null
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    var registeredHospital: Hospital? = null,
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "patient")
+    var registeredBed: Bed? = null,
 
-)
-{
+    var role: String,
+    val email: String,
+    val phoneNumber: String,
+    val password: String
+) {
+    // Initialize the derived properties similarly
+    val bedNum: Int? get() = registeredBed?.id
+    val hospitalNum: Int? get() = registeredHospital?.id
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Patient) return false
@@ -38,4 +42,3 @@ data class Patient(
         return Objects.hash(id)
     }
 }
-
