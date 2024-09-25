@@ -27,24 +27,24 @@ class DataInitializer(
             role = "ROLE_HOSPITAL"
         )
 
-        val hospital2 = Hospital(
-            name = "County Hospital",
-            address = "456 County Rd, Countyville",
-            email = "contact@countyhospital.com",
-            phoneNumber = "0987654321",
-            password = "password2",
-            role = "ROLE_HOSPITAL"
-        )
+//        val hospital2 = Hospital(
+//            name = "County Hospital",
+//            address = "456 County Rd, Countyville",
+//            email = "contact@countyhospital.com",
+//            phoneNumber = "0987654321",
+//            password = "password2",
+//            role = "ROLE_HOSPITAL"
+//        )
 
-        hospitalRepository.saveAll(listOf(hospital1, hospital2))
+        hospitalRepository.saveAll(listOf(hospital1))
 
         // Create beds
         val bed1 = Bed(name = "Bed 1", hospital = hospital1)
-        val bed2 = Bed(name = "Bed 2", hospital = hospital1)
-        val bed3 = Bed(name = "Bed 1", hospital = hospital2)
-        val bed4 = Bed(name = "Bed 2", hospital = hospital2)
+        //val bed2 = Bed(name = "Bed 2", hospital = hospital1)
+//        val bed3 = Bed(name = "Bed 1", hospital = hospital2)
+//        val bed4 = Bed(name = "Bed 2", hospital = hospital2)
 
-        bedRepository.saveAll(listOf(bed1, bed2, bed3, bed4))
+        bedRepository.saveAll(listOf(bed1))
 
         // Create patients
         val patient1 = Patient(
@@ -60,40 +60,40 @@ class DataInitializer(
             password = "password3"
         )
 
-        val patient2 = Patient(
-            name = "Jane Smith",
-            priority = "Low",
-            address = "321 Maple St, Citytown",
-            problem = "Routine checkup",
-            registeredHospital = hospital1,
-            registeredBed = bed2,
-            role = "ROLE_PATIENT",
-            email = "janesmith@example.com",
-            phoneNumber = "4445556666",
-            password = "password4"
-        )
+//        val patient2 = Patient(
+//            name = "Jane Smith",
+//            priority = "Low",
+//            address = "321 Maple St, Citytown",
+//            problem = "Routine checkup",
+//            registeredHospital = hospital1,
+//            registeredBed = bed2,
+//            role = "ROLE_PATIENT",
+//            email = "janesmith@example.com",
+//            phoneNumber = "4445556666",
+//            password = "password4"
+//        )
 
-        val patient3 = Patient(
-            name = "Alice Johnson",
-            priority = "Medium",
-            address = "654 Pine St, Countyville",
-            problem = "Mild fever",
-            registeredHospital = hospital2,
-            registeredBed = bed3,
-            role = "ROLE_PATIENT",
-            email = "alicejohnson@example.com",
-            phoneNumber = "7778889999",
-            password = "password5"
-        )
+//        val patient3 = Patient(
+//            name = "Alice Johnson",
+//            priority = "Medium",
+//            address = "654 Pine St, Countyville",
+//            problem = "Mild fever",
+//            registeredHospital = hospital2,
+//            registeredBed = bed3,
+//            role = "ROLE_PATIENT",
+//            email = "alicejohnson@example.com",
+//            phoneNumber = "7778889999",
+//            password = "password5"
+//        )
 
-        patientRepository.saveAll(listOf(patient1, patient2, patient3))
+        patientRepository.saveAll(listOf(patient1))
 
         // Linking patients to beds
         bed1.patient = patient1
-        bed2.patient = patient2
-        bed3.patient = patient3
+        //bed2.patient = patient2
+       // bed3.patient = patient3
 
         // Saving the updates
-        bedRepository.saveAll(listOf(bed1, bed2, bed3))
+        bedRepository.saveAll(listOf(bed1))
     }
 }

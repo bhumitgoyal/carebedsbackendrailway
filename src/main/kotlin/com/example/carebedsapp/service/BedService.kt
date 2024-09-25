@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 class BedService(
     private val bedRepository: BedRepository,
     private val patientRepository: PatientRepository,
-    private val hospitalRepository: HospitalRepository
+    private val hospitalRepository: HospitalRepository,
+    private val hospitalService: HospitalService
 ) {
 
     fun addBed(bed: Bed): Bed {
@@ -26,11 +27,21 @@ class BedService(
 
     @Transactional
     fun admitPatient(patientId: Int, bedId: Int) {
+
         val bed = bedRepository.findById(bedId).orElseThrow {
             ResourceNotFoundException("Bed not found")
         }
         val patient = patientRepository.findById(patientId).orElseThrow {
             ResourceNotFoundException("Patient not found")
+        }
+        val hospital = hospitalRepository.findById(patient.id).orElseThrow {
+            ResourceNotFoundException("Hospital not found")
+        }
+        if(hospital!=null){
+            hospitalService.admitPatient(patientId,hospital.id)
+        }
+        else{
+            throw ResourceNotFoundException("AAGAYAA")
         }
 
         bed.patient = patient
@@ -46,12 +57,19 @@ class BedService(
             ResourceNotFoundException("Patient not found")
         }
 
+
         val bed = patient.registeredBed
+        val hospital = patient.registeredHospital
+        if(hospital!=null){
+            hospitalService.removePatient(hospital.id,patientId)
+        }
 
         if (bed != null) {
             bed.patient = null
             bedRepository.save(bed) // Save bed after detaching patient
         }
+        patient.registeredHospital = null
+
         patient.registeredBed = null
         patientRepository.save(patient)
     }

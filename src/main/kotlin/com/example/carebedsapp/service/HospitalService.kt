@@ -93,4 +93,18 @@ class HospitalService(
         bedRepository.save(bed)
         hospitalRepository.save(hospital)
     }
+
+    fun removePatient(hospitalId:Int, patientId:Int){
+        val hospital = hospitalRepository.findById(hospitalId).orElseThrow{
+            ResourceNotFoundException("Hospital not found! ")
+        }
+        val patient = patientRepository.findById(patientId).orElseThrow{
+            ResourceNotFoundException("Patient not found! ")}
+        if(hospital.admittedPatients.contains(patient)){
+            hospital.admittedPatients.remove(patient)
+
+            hospitalRepository.save(hospital)
+
+        }
+    }
 }

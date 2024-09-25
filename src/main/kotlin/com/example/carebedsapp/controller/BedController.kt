@@ -4,12 +4,14 @@ import com.example.carebedsapp.model.Bed
 import com.example.carebedsapp.model.Hospital
 import com.example.carebedsapp.model.Patient
 import com.example.carebedsapp.service.BedService
+import com.example.carebedsapp.service.HospitalService
+import com.example.carebedsapp.service.PatientService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/beds")
-class BedController(private val bedService: BedService) {
+class BedController(private val bedService: BedService,private val hospitalService: HospitalService,private val patientService: PatientService) {
 
     @PostMapping("/register")
     fun registerBed(@RequestBody bed: Bed): ResponseEntity<Bed> {
@@ -53,6 +55,8 @@ class BedController(private val bedService: BedService) {
     @PostMapping("{bedId}/free/{patientId}")
     fun freePatient(@PathVariable bedId: Int, @PathVariable patientId: Int): ResponseEntity<String> {
         bedService.freePatient(patientId)
+
+
         return ResponseEntity.ok("Patient freed from bed successfully")
     }
 }
