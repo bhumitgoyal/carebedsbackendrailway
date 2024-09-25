@@ -14,7 +14,7 @@ data class Patient(
     val address: String,
     val problem: String,
 
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     var registeredHospital: Hospital? = null,
