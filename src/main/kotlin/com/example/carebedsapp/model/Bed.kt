@@ -17,7 +17,7 @@ data class Bed(
     @JoinColumn(name = "hospital_id")
     var hospital: Hospital? =null,
 
-    @JsonIgnore
+
     @OneToOne
     @JoinColumn(name = "patient_id")
     var patient: Patient? = null,

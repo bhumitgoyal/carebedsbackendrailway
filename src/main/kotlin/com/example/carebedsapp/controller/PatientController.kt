@@ -30,6 +30,7 @@ class PatientController(private val patientService: PatientService,private val h
             admissionType = patientRequest.admissionType,
             medications = patientRequest.medications,
             testResults = patientRequest.testResults,
+            age = patientRequest.age
         )
 
         val savedPatient = patientService.registerPatient(newPatient)

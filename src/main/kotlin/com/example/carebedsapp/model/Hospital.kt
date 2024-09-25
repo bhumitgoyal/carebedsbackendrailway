@@ -12,6 +12,7 @@ data class Hospital(
     val name: String,
     val address: String,
     val email: String,
+    val location:String,
     val phoneNumber: String,
     val password: String,
     val role: String,

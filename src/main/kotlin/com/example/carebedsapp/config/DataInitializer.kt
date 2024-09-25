@@ -17,83 +17,78 @@ class DataInitializer(
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
-        // Create hospitals
+        // Create and save hospitals
         val hospital1 = Hospital(
             name = "City Hospital",
             address = "123 Main St, Citytown",
             email = "contact@cityhospital.com",
             phoneNumber = "1234567890",
             password = "password1",
-            role = "ROLE_HOSPITAL"
+            role = "ROLE_HOSPITAL",
+            location = "Vellore"
         )
 
-//        val hospital2 = Hospital(
-//            name = "County Hospital",
-//            address = "456 County Rd, Countyville",
-//            email = "contact@countyhospital.com",
-//            phoneNumber = "0987654321",
-//            password = "password2",
-//            role = "ROLE_HOSPITAL"
-//        )
+        hospitalRepository.save(hospital1)
 
-        hospitalRepository.saveAll(listOf(hospital1))
+        // Create and save beds
+        val bed1 = Bed(
+            name = "Bed A1",
+            availability = "Occupied",
+            hospital = hospital1  // Linked to hospital1
+        )
 
-        // Create beds
-        val bed1 = Bed(name = "Bed 1", hospital = hospital1)
-        //val bed2 = Bed(name = "Bed 2", hospital = hospital1)
-//        val bed3 = Bed(name = "Bed 1", hospital = hospital2)
-//        val bed4 = Bed(name = "Bed 2", hospital = hospital2)
+        // Add additional beds if necessary
+        // val bed2 = Bed(name = "Bed A2", availability = "Available", hospital = hospital1)
 
         bedRepository.saveAll(listOf(bed1))
 
-        // Create patients
+        // Create and save patients
         val patient1 = Patient(
             name = "John Doe",
             priority = "High",
             address = "789 Elm St, Citytown",
-
-            registeredHospital = hospital1,
-            registeredBed = bed1,
+            registeredHospital = hospital1,  // Reference to hospital1
+            registeredBed = bed1,            // Reference to bed1
             role = "ROLE_PATIENT",
             email = "johndoe@example.com",
             phoneNumber = "1112223333",
-            password = "password3"
+            password = "password3",
+            age = 31,
+            location = "789 Elm St, Citytown",
+            gender = "Male",
+            bloodType = "O+",
+            medicalCondition = "Hypertension",
+            admissionType = "Emergency",
+            medications = "Amlodipine",
+            testResults = "Blood Pressure: 150/90"
         )
 
-//        val patient2 = Patient(
-//            name = "Jane Smith",
-//            priority = "Low",
-//            address = "321 Maple St, Citytown",
-//            problem = "Routine checkup",
-//            registeredHospital = hospital1,
-//            registeredBed = bed2,
-//            role = "ROLE_PATIENT",
-//            email = "janesmith@example.com",
-//            phoneNumber = "4445556666",
-//            password = "password4"
-//        )
+        patientRepository.save(patient1)
 
-//        val patient3 = Patient(
-//            name = "Alice Johnson",
-//            priority = "Medium",
-//            address = "654 Pine St, Countyville",
-//            problem = "Mild fever",
-//            registeredHospital = hospital2,
-//            registeredBed = bed3,
-//            role = "ROLE_PATIENT",
-//            email = "alicejohnson@example.com",
-//            phoneNumber = "7778889999",
-//            password = "password5"
-//        )
-
-        patientRepository.saveAll(listOf(patient1))
-
-        // Linking patients to beds
+        // Now link bed1 with patient1
         bed1.patient = patient1
-        //bed2.patient = patient2
-       // bed3.patient = patient3
+        bedRepository.save(bed1)
 
-        // Saving the updates
-        bedRepository.saveAll(listOf(bed1))
+        // Optional: You can save more patients and beds similarly
+        // Example for bed2 and patient2
+        // val patient2 = Patient(
+        //     name = "Jane Smith",
+        //     priority = "Low",
+        //     address = "321 Maple St, Citytown",
+        //     registeredHospital = hospital1,
+        //     registeredBed = bed2,
+        //     role = "ROLE_PATIENT",
+        //     email = "janesmith@example.com",
+        //     phoneNumber = "4445556666",
+        //     password = "password4",
+        //     age = 29,
+        //     location = "321 Maple St, Citytown",
+        //     gender = "Female",
+        //     bloodType = "A+",
+        //     medicalCondition = "Routine checkup"
+        // )
+        // patientRepository.save(patient2)
+        // bed2.patient = patient2
+        // bedRepository.save(bed2)
     }
 }
