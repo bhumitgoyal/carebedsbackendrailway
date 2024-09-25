@@ -1,6 +1,7 @@
 package com.example.carebedsapp.controller
 
 import com.example.carebedsapp.model.*
+import com.example.carebedsapp.service.HospitalService
 import com.example.carebedsapp.service.PatientService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -8,11 +9,31 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/patients")
-class PatientController(private val patientService: PatientService) {
+class PatientController(private val patientService: PatientService,private val hospitalService: HospitalService) {
 
     @PostMapping("/register")
-    fun registerPatient(@RequestBody patient: Patient): ResponseEntity<Patient> {
-        return ResponseEntity.ok(patientService.registerPatient(patient))
+    fun registerPatient(@RequestBody patientRequest: PatientRequest): ResponseEntity<Patient> {
+       // val hospital = hospitalService.getHospitalById(patientRequest.registeredHospital.id)
+         //   ?: return ResponseEntity.notFound().build()
+        val newPatient = Patient(
+            name = patientRequest.name,
+            priority = "null",
+            address = patientRequest.address,
+            role = patientRequest.role,
+            email = patientRequest.email,
+            phoneNumber = patientRequest.phoneNumber,
+            password = patientRequest.password,
+            location = patientRequest.location,
+            gender = patientRequest.gender,
+            bloodType = patientRequest.bloodType,
+            medicalCondition = patientRequest.medicalCondition,
+            admissionType = patientRequest.admissionType,
+            medications = patientRequest.medications,
+            testResults = patientRequest.testResults,
+        )
+
+        val savedPatient = patientService.registerPatient(newPatient)
+        return ResponseEntity.ok(savedPatient)
     }
 
     @GetMapping
