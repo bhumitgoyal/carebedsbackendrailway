@@ -62,4 +62,11 @@ class PatientService(private val patientRepository: PatientRepository) {
         // Implement your password validation logic (e.g., hash comparison)
         return inputPassword == storedPassword // Replace this with proper hashing
     }
+
+    fun prioritySet(id: Int, string: String) {
+        val patient = getPatientById(id)
+        patient.priority = string
+        patientRepository.save(patient)
+
+    }
 }

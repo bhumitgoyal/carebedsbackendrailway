@@ -48,6 +48,13 @@ class PatientController(private val patientService: PatientService,private val h
         return ResponseEntity.noContent().build() // Return 204 No Content
     }
 
+    @PostMapping("/{id}/priortiy/{string}")
+    fun prioritySet(@PathVariable id:Int, @PathVariable string: String):ResponseEntity<String>{
+        patientService.prioritySet(id,string)
+
+        return ResponseEntity.ok("Priority Set")
+    }
+
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse> {
         val (user, token) = patientService.login(loginRequest)
